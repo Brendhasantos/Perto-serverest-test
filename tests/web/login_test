@@ -1,0 +1,59 @@
+*** Settings ***
+Documentation    Teste da funcionalidade de
+...              Cadastro de usuários.
+
+Library          SeleniumLibrary
+
+Test Setup       Open Browser    ${URL}    ${BROWSER}
+Test Teardown    Close Browser
+
+*** Variables ***
+${URL}           https://front.serverest.dev/
+${BROWSER}       chrome
+
+*** Test Cases ***
+cadastrar um usuario com sucesso
+    Click Link    Cadastre-se
+
+    Input Text      id: nome       Brendha Santos
+    Input Text      id: email      BrendhaSantos@qa.com.br
+    Input Password  id: password   colorado
+    Click button    tag: button
+
+    wait until page contains    Cadastro realizado com sucesso    timeout=5s
+    Capture Page Screenshot
+
+cadastrar um usuario com email já cadastrado
+    Click Link    Cadastre-se
+
+    Input Text      id: nome       Brendha Santos
+    Input Text      id: email      BrendhaSantos@qa.com.br
+    Input Password  id: password   colorado
+    Click button    tag: button
+    
+    wait until page contains    Este email já está sendo usado    timeout=5s
+    Capture Page Screenshot
+
+
+cadastrar um usuario com email invalido
+    Click Link    Cadastre-se
+
+    Input Text      id: nome       Brendha Santos
+    Input Text      id: email      BrendhaSantos
+    Input Password  id: password   colorado
+    Click button    tag: button
+    
+    wait until page contains    email deve ser um email válido    timeout=5s
+    Capture Page Screenshot
+
+
+cadastrar um usuario com o campo do nome em branco
+    Input Text      id: nome       
+    Input Text      id: email      BrendhaSantos@qa.com.br
+    Input Password  id: password   colorado
+    Click button    tag: button
+
+    wait until page contains  
+    ...    error= nome não pode ficar em branco    
+    ...    timeout=5s
+    Capture Page Screenshot
